@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendNotification;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -31,7 +32,9 @@ class CompanyController extends Controller
 
         $validated['logo'] = $request->logo->store('logos');
         
-        Company::create($validated);
+        $company = Company::create($validated);
+
+        dispatch(new SendNotification($company));
 
         return redirect('companies'); 
     }
