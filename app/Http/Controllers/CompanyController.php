@@ -26,8 +26,11 @@ class CompanyController extends Controller
             'name' => ['required', 'max:256'],
             'email' => ['required', 'max:256', 'email'],
             'phone' => ['required', 'max:256'],
+            'logo' => ['image', 'mimes:jpg,png']
         ]);
 
+        $validated['logo'] = $request->logo->store('logos');
+        
         Company::create($validated);
 
         return redirect('companies'); 

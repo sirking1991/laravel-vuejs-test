@@ -10,7 +10,7 @@ let form = useForm({
     'name': '',
     'email': '',
     'phone': '',
-    'logo': '',
+    'logo': null,
 });
 
 let submit = () => {
@@ -83,11 +83,18 @@ let submit = () => {
                             <div class="mb-6">
                                 <label for="logo" class="block mb-2 uppercase font-bold text-gray-700">Logo</label>
                                 <input 
+                                    @input="form.logo = $event.target.files[0]"
                                     type="file" 
                                     name="logo" 
                                     id="logo"
+                                    :multiple="false"
+                                    :type="Image"
                                     class="border border-gray-400 p-2 w-full rounded-lg"
                                     >
+                                    <div 
+                                    v-if="form.errors.logo" 
+                                    v-text="form.errors.logo" 
+                                    class="text-red-500 ext-xs mt-1"></div>
                             </div>
 
                             <div class="mb-6">
