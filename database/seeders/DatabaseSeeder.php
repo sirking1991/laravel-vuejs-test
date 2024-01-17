@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Company::factory(10)->create();
+        Company::factory(50)->create();
 
-        Employee::factory(100)->create();
+        Employee::factory(200)->create();
     }
 }

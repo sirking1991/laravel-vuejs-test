@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->string('email');
             $table->string('phone');
+            $table->string('logo');
             $table->timestamps();
         });
     }
