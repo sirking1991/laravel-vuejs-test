@@ -44,7 +44,7 @@ let destroy = (id) => {
                     </div>
 
                     <div class="p-6 text-gray-900">
-                        <table class="table table-bordered table-responsive  mx-auto">
+                        <table v-if="companies.data.length>0" class="table table-bordered table-responsive  mx-auto">
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">ID</th>
@@ -77,6 +77,7 @@ let destroy = (id) => {
                                 </tr>
                             </tbody>
                         </table>
+                        <span v-else class="text-red-900 flex justify-center">No records</span>
                     </div>
                     <div class="flex justify-center mt-6">
                         <Paginator :links="companies.links"/>
