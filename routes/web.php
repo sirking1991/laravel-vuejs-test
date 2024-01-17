@@ -32,9 +32,15 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/companies', [CompanyController::class, 'index'])->name('companies');
 
+    Route::get('/company/new', fn() => Inertia::render('Company/New'));
+    Route::post('/company', [CompanyController::class, 'create']);
+
+    Route::delete('/company/{company}', [CompanyController::class, 'destroy']);
+
     Route::get('/company/{company}', function(Company $company){
         return Inertia::render('Company/View', ['company'=>$company]);
     });
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -20,4 +20,21 @@ class CompanyController extends Controller
             ]);
         return Inertia::render('Company/Index', ['companies'=>$companies, 'search'=> $request->search]);
     }
+
+    public function create(Request $request) {
+        $validated = $request->validate([
+            'name' => ['required', 'max:256'],
+            'email' => ['required', 'max:256', 'email'],
+            'phone' => ['required', 'max:256'],
+        ]);
+
+        Company::create($validated);
+
+        return redirect('companies'); 
+    }
+
+    public function destroy(Company $company) {
+        $company->delete();
+        return redirect('companies'); 
+    }
 }

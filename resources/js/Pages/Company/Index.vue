@@ -1,8 +1,9 @@
 <script setup>
 import Paginator from '@/Components/Paginator.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, Head, router } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import debounce from "lodash/debounce";
 
 let props = defineProps({
     companies: Object,
@@ -11,9 +12,16 @@ let props = defineProps({
 
 let search = ref(props.search);
 
-watch(search, value => {
-    router.get('/companies', {search: value}, {preserveState: true});
-})
+watch(search, debounce(function(value){
+    router.get('/companies', {search: value}, {preserveState: true, replace: true});
+}, 300));
+
+let destroy = (id) => {
+    if (confirm('Are you sure?')){
+        router.delete('/company/' + id);
+    }
+}
+
 </script>
 
 <template>
@@ -22,17 +30,21 @@ watch(search, value => {
     <AuthenticatedLayout>
         
         <div class="py-12">
-            <div class=" mx-auto sm:px-6 lg:px-8">
+            <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <div class="flex justify-between">
+                    <div class="flex justify-between ">
                         <span class="text-3xl" >
                             Companies
+                            <Link 
+                                href="/company/new"
+                                class="text-sm bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500"
+                                >Create new company</Link>
                         </span >
                         <input v-model="search" type="text" placeholder="Search..." class="border px-2 rounded-lg" />
                     </div>
 
                     <div class="p-6 text-gray-900">
-                        <table class="table table-bordered table-responsive">
+                        <table class="table table-bordered table-responsive  mx-auto">
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">ID</th>
@@ -53,6 +65,13 @@ watch(search, value => {
                                             :href="`/company/${company.id}`"
                                             class="text-indigo-600 hover:text-indigo-900">
                                             View
+                                        </Link>
+                                        |
+                                        <Link 
+                                            :href="`#`"
+                                            v-on:click="destroy(company.id)"                                            
+                                            class="text-red-600 hover:text-red-900">
+                                            Delete
                                         </Link>
                                     </td>
                                 </tr>
