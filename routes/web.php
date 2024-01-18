@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -32,16 +34,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
     
     Route::get('/companies', [CompanyController::class, 'index'])->name('companies');
-
     Route::get('/company/new', fn() => Inertia::render('Company/New'));
     Route::post('/company', [CompanyController::class, 'create']);
-
     Route::delete('/company/{company}', [CompanyController::class, 'destroy']);
-
     Route::get('/company/{company}', function(Company $company){
         return Inertia::render('Company/View', ['company'=>$company]);
     });
     Route::put('/company/{company}', [CompanyController::class, 'update']);
+
+    Route::get('/employees', [EmployeeController::class, 'index'])->name('employees');
+    Route::get('/employee/new', fn() => Inertia::render('Employee/New'));
+    Route::post('/employee', [EmployeeController::class, 'create']);
+    Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy']);
+    Route::get('/employee/{employee}', function(Employee $employee){
+        return Inertia::render('Employee/View', ['employee'=>$employee]);
+    });
+    Route::put('/employee/{employee}', [EmployeeController::class, 'update']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
