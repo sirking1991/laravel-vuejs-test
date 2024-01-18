@@ -15,22 +15,16 @@ const handleFileChanged = (event) => {
 };
 
 let form = useForm({
-    'name': props.company.name,
-    'email': props.company.email,
-    'phone': props.company.phone,
-    'logo': null,
+    _method: 'put',
+    name: props.company.name,
+    email: props.company.email,
+    phone: props.company.phone,
+    logo: null,
 });
 
 const submit = () => {
     form.logo = logo;
-    router.post('/company/' + props.company.id, {
-        _method: 'put',
-        name : form.name,
-        email : form.email,
-        phone: form.phone,
-        logo: logo
-    });
-    // form.put('/company/' + props.company.id);
+    router.post('/company/' + props.company.id, form);
 };
 </script>
 
