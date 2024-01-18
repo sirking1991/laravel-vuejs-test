@@ -14,7 +14,9 @@ class CompanyController extends Controller
 {
 
     public function index(Request $request) {
-        $companies = Company::when($request->search, fn($q)=>$q->where('name', 'like', '%'.$request->search.'%'))
+        $companies = Company::when($request->search, 
+            fn($q)=>$q->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('email', 'like', '%'.$request->search.'%'))
             ->paginate()
             ->withQueryString()
             ->through(fn($company)=>[
