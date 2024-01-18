@@ -1,11 +1,9 @@
 <x-mail::message>
-# Introduction
+# A new company has been created
 
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
+##Name: {{$company->name}}
+##Email: {{$company->email}}
+##Phone: {{$company->phone}}
 
 Thanks,<br>
 {{ config('app.name') }}

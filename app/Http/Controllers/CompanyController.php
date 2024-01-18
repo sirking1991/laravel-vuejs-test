@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendNotification;
+use App\Mail\NewCompanyCreated;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
@@ -44,7 +46,8 @@ class CompanyController extends Controller
         
         $company = Company::create($validated);
 
-        dispatch(new SendNotification($company));
+        Mail::to(config('app.notification-recipient', 'test@example.com'))
+            ->queue(new NewCompanyCreated($company));
 
         return redirect('companies'); 
     }
