@@ -1,10 +1,37 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
-defineProps({
+let props = defineProps({
     company: Object,
+    errors: Object
 });
+
+let logo = ref(null);
+
+const handleFileChanged = (event) => {
+    logo = event.target.files[0];
+};
+
+let form = useForm({
+    'name': props.company.name,
+    'email': props.company.email,
+    'phone': props.company.phone,
+    'logo': null,
+});
+
+const submit = () => {
+    form.logo = logo;
+    router.post('/company/' + props.company.id, {
+        _method: 'put',
+        name : form.name,
+        email : form.email,
+        phone: form.phone,
+        logo: logo
+    });
+    // form.put('/company/' + props.company.id);
+};
 </script>
 
 <template>
@@ -16,57 +43,71 @@ defineProps({
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg  p-6">
                     <div class="flex justify-between">
                         <span class="text-3xl" >
-                            {{company.name}}
+                            {{company.name}} (ID:{{ company.id }})
                         </span >
                     </div>
                     <hr>
                     <div class="p-6 text-gray-900">
-                        <form action="/" method="post">
+                        <form @submit.prevent="submit">
                             <div class="mb-6">
                                 <label for="name" class="block mb-2 uppercase font-bold text-gray-700">Name</label>
                                 <input 
-                                    v-model="company.name"
+                                    v-model="form.name"
                                     type="text" 
                                     name="name" 
                                     id="name"
                                     required
                                     class="border border-gray-400 p-2 w-full rounded-lg"
                                     >
+                                <div 
+                                    v-if="errors.name" 
+                                    v-text="errors.name" 
+                                    class="text-red-500 ext-xs mt-1"></div>
                             </div>
 
                             <div class="mb-6">
                                 <label for="email" class="block mb-2 uppercase font-bold text-gray-700">Email</label>
                                 <input 
-                                    v-model="company.email"
+                                    v-model="form.email"
                                     type="email" 
                                     name="email" 
                                     id="email"
                                     required
                                     class="border border-gray-400 p-2 w-full rounded-lg"
                                     >
+                                <div 
+                                    v-if="errors.email" 
+                                    v-text="errors.email" 
+                                    class="text-red-500 ext-xs mt-1"></div>
                             </div>
 
                             <div class="mb-6">
                                 <label for="phone" class="block mb-2 uppercase font-bold text-gray-700">Phone</label>
                                 <input 
-                                    v-model="company.phone"
+                                    v-model="form.phone"
                                     type="phone" 
                                     name="phone" 
                                     id="phone"
                                     required
                                     class="border border-gray-400 p-2 w-full rounded-lg"
                                     >
+                                <div 
+                                    v-if="errors.phone" 
+                                    v-text="errors.phone" 
+                                    class="text-red-500 ext-xs mt-1"></div>
                             </div>
 
                             <div class="mb-6">
                                 <label for="logo" class="block mb-2 uppercase font-bold text-gray-700">Logo</label>
                                 <input 
+                                    @change="handleFileChanged"
                                     type="file" 
                                     name="logo" 
                                     id="logo"
                                     required
                                     class="border border-gray-400 p-2 w-full rounded-lg"
                                     >
+                                <img :src="`/file?path=`+ company.logo" :alt="company.name" class="w-100">
                             </div>
 
                             <div class="mb-6">
