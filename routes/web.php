@@ -43,12 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/company/{company}', [CompanyController::class, 'update']);
 
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees');
-    Route::get('/employee/new', fn() => Inertia::render('Employee/New'));
+    Route::get('/employee/new', [EmployeeController::class, 'new']);
     Route::post('/employee', [EmployeeController::class, 'create']);
     Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy']);
-    Route::get('/employee/{employee}', function(Employee $employee){
-        return Inertia::render('Employee/View', ['employee'=>$employee]);
-    });
+    Route::get('/employee/{employee}', [EmployeeController::class, 'view']);
     Route::put('/employee/{employee}', [EmployeeController::class, 'update']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

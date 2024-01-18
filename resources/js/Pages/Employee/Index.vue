@@ -51,7 +51,7 @@ let destroy = (id) => {
                                     <th scope="col">First name</th>
                                     <th scope="col">Last name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Phone</th>
+                                    <th scope="col">Company</th>
                                     <th scope="col">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -61,7 +61,7 @@ let destroy = (id) => {
                                     <td class="p-3">{{ employee.first_name }}</td>
                                     <td class="p-3">{{ employee.last_name }}</td>
                                     <td class="p-3">{{ employee.email }}</td>
-                                    <td class="p-3">{{ employee.phone }}</td>
+                                    <td class="p-3">{{ employee.company_name }}</td>
                                     <td class="p-3">
                                         <Link 
                                             :href="`/employee/${employee.id}`"
